@@ -22,8 +22,6 @@ def run(source, replica, time_interval, log_file):
     datefmt='%Y-%m-%d %H:%M:%S'      
     )
     logging.info(f"Starting sync: Source folder:{source} Replica folder: {replica} Time interval: {time_interval}")
-    
-
     while (True):
         folders_sync(source, replica)
         time.sleep(time_interval)
@@ -71,6 +69,7 @@ def copy_file(file, source, replica):
     dest_file_path = os.path.join(replica, file)
     method = "updated" if os.path.exists(dest_file_path) else "created"
     try:
+        #Check if it is a directory
         if os.path.isdir(file_path):
             shutil.copytree(file_path, dest_file_path)
         else:
@@ -81,7 +80,6 @@ def copy_file(file, source, replica):
 
     except Exception as e:
             logging.error(f"Error copying file: {file}")
-
 
 def delete_file(file, replica):
     """
@@ -94,17 +92,17 @@ def delete_file(file, replica):
     """
     file_path = os.path.join(replica, file)
     try:
+        #Check if it is a directory
         if os.path.isdir(file_path):
             shutil.rmtree(file_path)
         else:
             os.unlink(file_path)
         
-        msg = f"The file: {file_path} was removed"
+        msg = f"The file: {file_path} was deleted"
         logging.info(msg)
         print(msg)
     except Exception as e:
-            print(f"Error deleting file: {file_path}")
-
+            logging.error(f"Error deleting file: {file_path}")
 
 def check_common_files(common_files, source, replica):
     """
@@ -125,7 +123,8 @@ def check_common_files(common_files, source, replica):
 
         if md5_source != md5_replica:
             copy_file(common_file, source, replica)
- 
+        else:
+            logging.info(f"The file: {file_source} is synchronized")
 
 def get_md5(file):
     """
@@ -139,7 +138,6 @@ def get_md5(file):
     with open(file, 'rb') as file:
         md5.update(file.read())
     return md5.hexdigest()
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Synchronization of two folders (source and replica)")
