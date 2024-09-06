@@ -7,6 +7,15 @@ import argparse
 import logging
 
 def run(source, replica, time_interval, log_file):
+    """
+    Run script periodically and log is initialized
+    
+    Parameters:
+        source (str): Source folder path
+        replica (str): Replica folder path
+        time_interval (int): Time interval the script is running
+        log_file (str): Log file path
+    """
 
     if not os.path.exists(source):
         raise argparse.ArgumentError(None, "Source folder does not exist")
@@ -109,7 +118,7 @@ def check_common_files(common_files, source, replica):
     Compare content of common files between source and replica folders
     
     Parameters:
-        common_files (list): List of names of common files
+        common_files (list): List of common files
         source (str): Path of the source folder
         replica (str): Path of the replica folder
 
