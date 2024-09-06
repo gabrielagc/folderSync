@@ -21,7 +21,7 @@ def run(source, replica, time_interval, log_file):
     format='%(asctime)s - %(levelname)s - %(message)s',  
     datefmt='%Y-%m-%d %H:%M:%S'      
     )
-    logging.info(f"Starting sync: Source folder:{source} Replica folder: {replica} Time interval: {time_interval}")
+    logging.info(f"Starting sync: Source folder: {source} Replica folder: {replica} Time interval: {time_interval}")
     while (True):
         folders_sync(source, replica)
         time.sleep(time_interval)
